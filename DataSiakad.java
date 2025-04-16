@@ -87,19 +87,19 @@ public class DataSiakad {
 
     void urutkanNilaiAkhirASC() {
         for (int i = 0; i < dataPenilaian.length - 1; i++) {
-            int maxIndex = i;
+            int minIndex = i;
             for (int j = i + 1; j < dataPenilaian.length; j++) {
-                double nilaiAkhirMax = dataPenilaian[maxIndex].hitungNilaiAkhir();
+                double nilaiAkhirMax = dataPenilaian[minIndex].hitungNilaiAkhir();
                 double nilaiAkhirCurrent = dataPenilaian[j].hitungNilaiAkhir();
 
                 if (nilaiAkhirCurrent < nilaiAkhirMax) {
-                    maxIndex = j;
+                    minIndex = j;
                 }
             }
 
             Penilaian temp = dataPenilaian[i];
-            dataPenilaian[i] = dataPenilaian[maxIndex];
-            dataPenilaian[maxIndex] = temp;
+            dataPenilaian[i] = dataPenilaian[minIndex];
+            dataPenilaian[minIndex] = temp;
         }
 
         tampilkanPenilaian();
