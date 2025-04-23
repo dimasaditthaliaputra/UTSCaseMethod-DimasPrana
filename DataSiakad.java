@@ -1,5 +1,6 @@
 import java.util.*;
 
+//Pranata
 public class DataSiakad {
     List<Mahasiswa> dataMhs19 = new ArrayList<>();
     List<MataKuliah> dataMk19 = new ArrayList<>();

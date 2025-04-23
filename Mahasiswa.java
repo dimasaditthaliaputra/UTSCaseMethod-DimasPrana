@@ -1,3 +1,4 @@
+//Pranata
 public class Mahasiswa {
     String nama19;
     String nim19;

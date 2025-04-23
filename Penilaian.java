@@ -1,3 +1,4 @@
+//Pranata
 public class Penilaian {
     Mahasiswa mahasiswa19;
     MataKuliah mataKuliah19;

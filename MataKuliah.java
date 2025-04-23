@@ -1,3 +1,4 @@
+//Pranata
 public class MataKuliah {
     String kodeMK19;
     String namaMK19;
