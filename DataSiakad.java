@@ -1,116 +1,89 @@
+import java.util.*;
+
 public class DataSiakad {
-    Mahasiswa[] dataMhs = new Mahasiswa[3];
-    int mhsIndex = 0;
-    MataKuliah[] dataMk = new MataKuliah[3];
-    int mkIndex = 0;
-    Penilaian[] dataPenilaian = new Penilaian[5];
-    int penilaianIndex = 0;
+    List<Mahasiswa> dataMhs19 = new ArrayList<>();
+    List<MataKuliah> dataMk19 = new ArrayList<>();
+    List<Penilaian> dataPenilaian19 = new ArrayList<>();
 
-    void tambahMahasiswa(Mahasiswa mahasiswa) {
-        if (mhsIndex < dataMhs.length) {
-            dataMhs[mhsIndex] = mahasiswa;
-            mhsIndex++;
-        } else {
-            System.out.println("Array Mahasiswa penuh!");
-        }
+    void tambah(Mahasiswa m) {
+        dataMhs19.add(m);
     }
 
-    void tambahMataKuliah(MataKuliah mataKuliah) {
-        if (mkIndex < dataMk.length) {
-            dataMk[mkIndex] = mataKuliah;
-            mkIndex++;
-        } else {
-            System.out.println("Array Mata Kuliah penuh!");
-        }
+    void tambah(MataKuliah m) {
+        dataMk19.add(m);
     }
 
-    void tambahPenilaian(Penilaian penilaianObj) {
-        if (penilaianIndex < dataPenilaian.length) {
-            dataPenilaian[penilaianIndex] = penilaianObj;
-            penilaianIndex++;
-        } else {
-            System.out.println("Array Penilaian penuh!");
-        }
+    void tambah(Penilaian p) {
+        dataPenilaian19.add(p);
     }
 
     void tampilMhs() {
-        System.out.println("\nDaftar Mahasiswa: ");
-        for (Mahasiswa mhs : dataMhs) {
-            mhs.tampilMahasiswa();
-        }
-        System.out.println();
+        System.out.println("\n=== Daftar Mahasiswa ===");
+        for (Mahasiswa m : dataMhs19)
+            m.tampilMahasiswa();
     }
 
-    void tampilkanMataKuliah() {
-        System.out.println("\nDaftar Mata Kuliah: ");
-        for (MataKuliah matkul : dataMk) {
-            matkul.tampilMatakuliah();
-        }
-        System.out.println();
+    void tampilMk() {
+        System.out.println("\n=== Daftar Mata Kuliah ===");
+        for (MataKuliah mk : dataMk19)
+            mk.tampilMatakuliah();
     }
 
-    void cariMahasiswa(String nimCari) {
-        boolean ketemu = false;
-        for (int i = 0; i < mhsIndex; i++) {
-            if (dataMhs[i].nim.equals(nimCari)) {
-                System.out.print("\nData Mahasiswa Ditemukan : ");
-                dataMhs[i].tampilMahasiswa();
-                ketemu = true;
-                break;
-            }
-        }
-        if (!ketemu) {
-            System.out.println("\nMahasiswa dengan NIM " + nimCari + " tidak ditemukan.");
-        }
-        System.out.println();
+    void tampilPenilaian() {
+        System.out.println("\n=== Data Penilaian ===");
+        for (Penilaian p : dataPenilaian19)
+            p.tampilPenilaian();
     }
 
-    void urutkanNilaiAkhirDESC() {
-        for (int i = 0; i < dataPenilaian.length - 1; i++) {
-            int maxIndex = i;
-            for (int j = i + 1; j < dataPenilaian.length; j++) {
-                double nilaiAkhirMax = dataPenilaian[maxIndex].hitungNilaiAkhir();
-                double nilaiAkhirCurrent = dataPenilaian[j].hitungNilaiAkhir();
+    MataKuliah cariMatkulByKode(String kode) {
+        for (MataKuliah mk : dataMk19) {
+            if (mk.kodeMK19.equalsIgnoreCase(kode))
+                return mk;
+        }
+        return null;
+    }
 
-                if (nilaiAkhirCurrent > nilaiAkhirMax) {
-                    maxIndex = j;
+    void sortMhsByName(boolean asc) {
+        int n = dataMhs19.size();
+        for (int i = 0; i < n - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (asc ? dataMhs19.get(j).nama19.compareToIgnoreCase(dataMhs19.get(idx).nama19) < 0
+                        : dataMhs19.get(j).nama19.compareToIgnoreCase(dataMhs19.get(idx).nama19) > 0) {
+                    idx = j;
                 }
             }
-
-            Penilaian temp = dataPenilaian[i];
-            dataPenilaian[i] = dataPenilaian[maxIndex];
-            dataPenilaian[maxIndex] = temp;
+            Collections.swap(dataMhs19, i, idx);
         }
-
-        tampilkanPenilaian();
     }
 
-    void urutkanNilaiAkhirASC() {
-        for (int i = 0; i < dataPenilaian.length - 1; i++) {
-            int minIndex = i;
-            for (int j = i + 1; j < dataPenilaian.length; j++) {
-                double nilaiAkhirMin = dataPenilaian[minIndex].hitungNilaiAkhir();
-                double nilaiAkhirCurrent = dataPenilaian[j].hitungNilaiAkhir();
-
-                if (nilaiAkhirCurrent < nilaiAkhirMin) {
-                    minIndex = j;
-                }
+    void sortPenByNilai(boolean asc) {
+        for (int i = 1; i < dataPenilaian19.size(); i++) {
+            Penilaian key = dataPenilaian19.get(i);
+            double valKey = key.hitungNilaiAkhir();
+            int j = i - 1;
+            while (j >= 0 && (asc ? dataPenilaian19.get(j).hitungNilaiAkhir() > valKey
+                    : dataPenilaian19.get(j).hitungNilaiAkhir() < valKey)) {
+                dataPenilaian19.set(j + 1, dataPenilaian19.get(j));
+                j--;
             }
-
-            Penilaian temp = dataPenilaian[i];
-            dataPenilaian[i] = dataPenilaian[minIndex];
-            dataPenilaian[minIndex] = temp;
+            dataPenilaian19.set(j + 1, key);
         }
-
-        tampilkanPenilaian();
     }
 
-    void tampilkanPenilaian() {
-        System.out.println();
-        for (Penilaian p : dataPenilaian) {
-            double nilaiAkhir = p.hitungNilaiAkhir();
-            System.out.println(p.mahasiswa.nama + " | " + p.mataKuliah.namaMK + " | " + nilaiAkhir);
+    int binarySearchMhs(String target) {
+        sortMhsByName(true);
+        int lo = 0, hi = dataMhs19.size() - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            int cmp = dataMhs19.get(mid).nama19.compareToIgnoreCase(target);
+            if (cmp == 0)
+                return mid;
+            if (cmp < 0)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
         }
-        System.out.println();
+        return -1;
     }
 }

@@ -1,126 +1,119 @@
 import java.util.*;
 
 public class SiakadMain {
-    static Scanner input = new Scanner(System.in);
-    static DataSiakad dataSiakad = new DataSiakad();
+    static Scanner input19 = new Scanner(System.in);
+    static DataSiakad data19 = new DataSiakad();
 
     public static void main(String[] args) {
+        data19.tambah(new MataKuliah("BD19", "Basis Data", 3));
+        data19.tambah(new MataKuliah("ALSD19", "ALSD", 3));
+        data19.tambah(new MataKuliah("MATL19", "Matematika", 2));
 
-        Mahasiswa[] mahasiswaBatch = {
-                new Mahasiswa("Ali Rahman", "22001", "Informatika"),
-                new Mahasiswa("Budi Santoso", "22002", "Informatika"),
-                new Mahasiswa("Citra Dewi", "22003", "Informatika")
-        };
-
-        MataKuliah[] mataKuliahBatch = {
-                new MataKuliah("MK001", "Struktur Data", 3),
-                new MataKuliah("MK002", "Basis Data", 3),
-                new MataKuliah("MK003", "Desain Web", 3)
-        };
-
-        Penilaian[] penilaianBatch = {
-                new Penilaian(mahasiswaBatch[0], mataKuliahBatch[0], 80, 85, 90),
-                new Penilaian(mahasiswaBatch[0], mataKuliahBatch[1], 60, 75, 70),
-                new Penilaian(mahasiswaBatch[1], mataKuliahBatch[0], 75, 70, 80),
-                new Penilaian(mahasiswaBatch[2], mataKuliahBatch[1], 85, 90, 95),
-                new Penilaian(mahasiswaBatch[2], mataKuliahBatch[2], 80, 90, 65)
-        };
-
-        for (Mahasiswa mhs : mahasiswaBatch) {
-            dataSiakad.tambahMahasiswa(mhs);
-        }
-
-        for (MataKuliah mk : mataKuliahBatch) {
-            dataSiakad.tambahMataKuliah(mk);
-        }
-
-        for (Penilaian penilaian : penilaianBatch) {
-            dataSiakad.tambahPenilaian(penilaian);
-        }
-
-        int pilihan;
+        int menu;
         do {
-            System.out.println("=== MENU SISTEM AKADEMIK ==");
-            System.out.println("1. Tampilkan Daftar Mahasiswa");
-            System.out.println("2. Tampilkan Daftar Mata Kuliah");
-            System.out.println("3. Tampilkan Data Penilaian");
-            System.out.println("4. Urutkan Mahasiswa Berdasarkan Nilai Akhir");
-            System.out.println("5. Cari Mahasiswa Berdasarkan NIM");
+            System.out.println("\n=== MENU ===");
+            System.out.println("1. Input Data Mahasiswa + Penilaian");
+            System.out.println("2. Tampilkan Daftar Mahasiswa");
+            System.out.println("3. Tampilkan Daftar Mata Kuliah");
+            System.out.println("4. Tampilkan Penilaian");
+            System.out.println("5. Urutkan Mahasiswa by Nama");
+            System.out.println("6. Urutkan Penilaian by Nilai Akhir");
+            System.out.println("7. Cari Mahasiswa by Nama");
             System.out.println("0. Keluar");
-            System.out.print("Pilih Menu (0 - 5) : ");
-            pilihan = input.nextInt();
-            input.nextLine();
+            System.out.print("Pilih Menu: ");
+            menu = input19.nextInt();
+            input19.nextLine();
 
-            switch (pilihan) {
+            switch (menu) {
                 case 1:
-                    tampilkanMahasiswa();
+                    menuInput();
                     break;
                 case 2:
-                    tampilkanMataKuliah();
+                    data19.tampilMhs();
                     break;
                 case 3:
-                    dataSiakad.tampilkanPenilaian();
+                    data19.tampilMk();
                     break;
                 case 4:
-                    menuSorting();
+                    data19.tampilPenilaian();
                     break;
                 case 5:
-                    System.out.print("Masukkan NIM yang dicari: ");
-                    String nimCari = input.nextLine();
-                    dataSiakad.cariMahasiswa(nimCari);
+                    menuSortName();
+                    break;
+                case 6:
+                    menuSortNilai();
+                    break;
+                case 7:
+                    menuSearch();
                     break;
                 case 0:
-                    System.out.println("Terima Kasih!");
-                    return;
+                    System.out.println("Bye bro");
+                    break;
                 default:
-                    System.out.println("\nMaaf Menu Tidak Tersedia\n");
+                    System.out.println("Pilihan gak valid");
             }
-        } while (pilihan != 0);
-
-        input.close();
+        } while (menu != 0);
+        input19.close();
     }
 
-    static void tampilkanMahasiswa() {
-        if (dataSiakad.dataMhs[0] == null) {
-            System.out.println("Tidak ada data yang tersedia.");
-        } else {
-            dataSiakad.tampilMhs();
-        }
-    }
-
-    static void tampilkanMataKuliah() {
-        if (dataSiakad.dataMk[0] == null) {
-            System.out.println("Tidak ada data yang tersedia.");
-        } else {
-            dataSiakad.tampilkanMataKuliah();
-        }
-    }
-
-    static void menuSorting() {
-        int pilSorting;
-    
+    static void menuInput() {
         while (true) {
-            System.out.println("\n==== Pilihan Sorting ====");
-            System.out.println("1. Terkecil ke terbesar (ASC)");
-            System.out.println("2. Terbesar ke terkecil (DESC)");
-            System.out.println("3. Keluar");
-            System.out.print("Pilih Tipe Sorting : ");
-            pilSorting = input.nextInt();
-            input.nextLine();
-    
-            switch (pilSorting) {
-                case 1:
-                    dataSiakad.urutkanNilaiAkhirASC();
-                    return;
-                case 2:
-                    dataSiakad.urutkanNilaiAkhirDESC();
-                    return;
-                case 3:
-                    System.out.println("Keluar dari menu sorting.");
-                    return;
-                default:
-                    System.out.println("\nInput tidak valid. Masukkan Input yang benar!");
+            System.out.print("Masukkan Nama Mahasiswa: "); String nama = input19.nextLine();
+            System.out.print("Masukkan NIM: "); String nim = input19.nextLine();
+            System.out.print("Masukkan Prodi: "); String prodi = input19.nextLine();
+            Mahasiswa m = new Mahasiswa(nama, nim, prodi);
+            data19.tambah(m);
+
+            MataKuliah mk;
+            while (true) {
+                data19.tampilMk();
+                System.out.print("Pilih Kode MK (e.g. BD19): ");
+                String kode = input19.nextLine();
+                mk = data19.cariMatkulByKode(kode);
+                if (mk != null) break;
+                System.out.println("Kode MK tidak valid. Coba lagi!");
+            }
+
+            System.out.print("Nilai Tugas: "); double tugas = input19.nextDouble();
+            System.out.print("Nilai UTS: "); double uts = input19.nextDouble();
+            System.out.print("Nilai UAS: "); double uas = input19.nextDouble();
+            input19.nextLine();
+            data19.tambah(new Penilaian(m, mk, tugas, uts, uas));
+
+            String lagi;
+            while (true) {
+                System.out.print("Tambah data lagi? (Y/N): ");
+                lagi = input19.nextLine();
+                if (lagi.equalsIgnoreCase("Y")) break;
+                if (lagi.equalsIgnoreCase("N")) return;
+                System.out.println("Input tidak valid! Masukkan Y atau N.");
             }
         }
-    }    
+    }
+
+    static void menuSortName() {
+        System.out.print("1. ASC  2. DESC: ");
+        int t = input19.nextInt();
+        input19.nextLine();
+        data19.sortMhsByName(t == 1);
+        data19.tampilMhs();
+    }
+
+    static void menuSortNilai() {
+        System.out.print("1. ASC  2. DESC: ");
+        int t = input19.nextInt();
+        input19.nextLine();
+        data19.sortPenByNilai(t == 1);
+        data19.tampilPenilaian();
+    }
+
+    static void menuSearch() {
+        System.out.print("Masukkan Nama yang dicari: ");
+        String target = input19.nextLine();
+        int idx = data19.binarySearchMhs(target);
+        if (idx >= 0)
+            System.out.println("Data ditemukan di index " + idx);
+        else
+            System.out.println("Data tidak ada di database");
+    }
 }
